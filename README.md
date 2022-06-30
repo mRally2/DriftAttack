@@ -36,11 +36,13 @@
       <li>The replacement of the string "PRESS ENTER (TO BEGIN)" works only if you launch the game with keyboard controls</li>
       <li>Checkpoints from Time Challenges crash the game when trying to show on screen the time bonus</li>
       <li>Sprint events do crash the game after crossing the finish line. Quit them instead</li>
+      <li>Battle Mode events softlock the game near the finish line</li>
       <li>Sometimes the game crashes while loading an event</li>
       <li>If you want to restart the same race keep in mind that the first drift might show your previous gathered points and then is gonna start all over with the next one you initiate</li>
       <li>During your first drift you might not be able to see in real-time your drift score next to the gauge</li>
       <li>When performing air time all your points will be reset or wrong</li>
       <li>The game manages the points in multiples of 5<br></li>
+      <li>Toggling the HUD might crash the game on the spot</li>
    </ul>
    <p><br></p>
    <p><strong>DISCLAIMER</strong></p>
