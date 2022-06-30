@@ -7,7 +7,7 @@
    <p><strong>FEATURES</strong></p>
    <hr>
    <ul>
-      <li>Get to experience drifting in 2 ways: powerslide enhanced and all driving assists off. <em>Special thanks to Brawltendo</em></li>
+      <li>Get to experience drifting in 2 ways: enhanced powerslide and all driving assists off. <em>Special thanks to Brawltendo</em></li>
       <li>Your collected drifting points will be shown on screen after performing each drift</li>
       <li>There are special messages for 250, 500, 750, 1000, 2500 and 5000 points</li>
       <li>You get to see your current performing drift points on the left side of your gauge</li>
