@@ -37,6 +37,7 @@
       <li>Checkpoints from Time Challenges crash the game when trying to show on screen the time bonus</li>
       <li>Sprint events do crash the game after crossing the finish line. Quit them instead</li>
       <li>Battle Mode events softlock the game near the finish line</li>
+      <li>Automatic shifting locks onto a gear after some time when driving out of bounds. Use manual instead</li>
       <li>During your first drift you might not be able to see in real-time your drift score next to the gauge</li>
       <li>When performing air time all your points will be reset or wrong</li>
       <li>The game manages the points in multiples of 5<br></li>
