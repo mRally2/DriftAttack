@@ -37,8 +37,6 @@
       <li>Checkpoints from Time Challenges crash the game when trying to show on screen the time bonus</li>
       <li>Sprint events do crash the game after crossing the finish line. Quit them instead</li>
       <li>Battle Mode events softlock the game near the finish line</li>
-      <li>Sometimes the game crashes while loading an event</li>
-      <li>If you want to restart the same race keep in mind that the first drift might show your previous gathered points and then is gonna start all over with the next one you initiate</li>
       <li>During your first drift you might not be able to see in real-time your drift score next to the gauge</li>
       <li>When performing air time all your points will be reset or wrong</li>
       <li>The game manages the points in multiples of 5<br></li>
@@ -48,7 +46,6 @@
    <p><strong>DISCLAIMER</strong></p>
    <hr>
    <ul>
-      <li>Pausing the game makes you lose all your points. Take that into account</li>
       <li>Your antivirus might detect it as a threat. It’s a false positive. The tool has been built using a custom compiled version of Cheat Engine 7.3</li>
       <li>I am not responsible for any damage caused to your system by this tool so use it at your own risk</li>
       <li>I do not own the rights of the art seen on the cover and thumbnail of this product. It’s a fan art for illustrating the purpose of the product itself. All rights reserved to Electronic Arts Inc.<br></li>
