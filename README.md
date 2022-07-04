@@ -23,9 +23,9 @@
    <ul>
       <li>Open the game before using the tool</li>
       <li>Enable it by pressing F6 preferably before the PRESS ENTER screen</li>
-      <li>Use Numpad 6 to toggle all vehicle assists</li>
-      <li>Use Numpad 7 to toggle the traffic density</li>
-      <li>Use Numpad 8 to toggle the raw input for controller and wheel configs</li>
+      <li>Use NUMPAD 7 to toggle all vehicle assists</li>
+      <li>Use NUMPAD 8 to toggle the traffic density</li>
+      <li>Use NUMPAD 9 to toggle the raw input for controller and wheel configs</li>
       <li>Do not close the tool once in-game, let the tool work in the background as you play</li>
       <li>It’s compatible with the rest of the trainers previously featured<br></li>
    </ul>
