@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="38">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>702</ID>
+      <Description>"DRIFT ATTACK"</Description>
+      <Options moActivateChildrenAsWell="1"/>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <Hotkeys>
+        <Hotkey>
+          <Action>Toggle Activation</Action>
+          <Keys>
+            <Key>117</Key>
+          </Keys>
+          <ID>0</ID>
+        </Hotkey>
+      </Hotkeys>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>882</ID>
+          <Description>"Drift Attack String Swap"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+getLuaEngine().cbShowOnPrint.Checked=false
+getLuaEngine().hide()
+
+function DEC_HEX(IN)
+    local B,K,OUT,I,D=16,"0123456789ABCDEF","",0
+    while IN&gt;0 do
+        I=I+1
+        IN,D=math.floor(IN/B),math.mod(IN,B)+1
+        OUT=string.sub(K,D,D)..OUT
+    end
+    return OUT
+end
+
+local addressStart = "F0000000"
+local addressEnd = "FFFFFFFF"
+
+[ENABLE]
+
+local AOB = "4D 41 4C 00 52 45 41 4C 49 53 54 49 43 00 53 45 4C 45 43 54 20 41 20 50 4C 41 59 4C 49 53 54 00"
+local MyMemscan = createMemScan()
+memscan_returnOnlyOneResult(MyMemscan, true)
+memscan_firstScan(MyMemscan,soExactValue,vtByteArray,0,AOB,"",addressStart,addressEnd,"*X*W*C",0,"",true,true,false,false)
+memscan_waitTillDone(MyMemscan)
+local address = memscan_getOnlyResult(MyMemscan) --Returns the address in integer format
+if address ~= nil then
+    local string_end = {0x00}
+    writeString(address+0x20,"DRIFT ATTACK    ")
+    writeBytes(address+0x2C,string_end)
+    print "String Swap Complete Complete!"
+else
+    print "String Swap Failed!"
+end
+
+
+[DISABLE]
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>712</ID>
+          <Description>"Drift Attack String Injection"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+getLuaEngine().cbShowOnPrint.Checked=false
+getLuaEngine().hide()
+
+--MEMORY SCAN
+local addressStart = "F0000000"
+local addressEnd = "FFFFFFFF"
+
+--+{0:d} XP
+local AOB = "2B 7B 30 3A 64 7D 20 58 50 00 52 41 43 45 20 52 45 53 55 4C 54 53"
+local MyMemscan = createMemScan()
+memscan_returnOnlyOneResult(MyMemscan, true)
+memscan_firstScan(MyMemscan,soExactValue,vtByteArray,0,AOB,"",addressStart,addressEnd,"*X*W*C",0,"",true,true,false,false)
+memscan_waitTillDone(MyMemscan)
+local xp = memscan_getOnlyResult(MyMemscan) --Returns the address in integer format
+
+--DRIFTING BONUS
+local AOB = "44 52 49 46 54 49 4E 47 20 42 4F 4E 55 53 00 44 52 49 56 45 52 20 4C 45 56 45 4C 20 55 50 21"
+local MyMemscan = createMemScan()
+memscan_returnOnlyOneResult(MyMemscan, true)
+memscan_firstScan(MyMemscan,soExactValue,vtByteArray,0,AOB,"",addressStart,addressEnd,"*X*W*C",0,"",true,true,false,false)
+memscan_waitTillDone(MyMemscan)
+local db = memscan_getOnlyResult(MyMemscan) --Returns the address in integer format
+
+--DRIFTING {0:s}s
+local AOB = "44 52 49 46 54 49 4E 47 20 7B 30 3A 73 7D 73 00 54 52 59 20 41 47 41 49"
+local MyMemscan = createMemScan()
+memscan_returnOnlyOneResult(MyMemscan, true)
+memscan_firstScan(MyMemscan,soExactValue,vtByteArray,0,AOB,"",addressStart,addressEnd,"*X*W*C",0,"",true,true,false,false)
+memscan_waitTillDone(MyMemscan)
+local dftg = memscan_getOnlyResult(MyMemscan) --Returns the address in integer format
+
+[ENABLE]
+print "Drift Message Display timer enabled"
+local a = {0x47,0x4F,0x4F,0x44,0x20,0x44,0x52,0x49,0x46,0x54,0x00} --GOOD DRIFT
+local b = {0x47,0x52,0x45,0x41,0x54,0x20,0x44,0x52,0x49,0x46,0x54,0x00} --GREAT DRIFT
+local c = {0x53,0x55,0x50,0x45,0x52,0x42,0x20,0x44,0x52,0x49,0x46,0x54,0x00} --SUPERB DRIFT
+local d = {0x44,0x52,0x49,0x46,0x54,0x20,0x4B,0x49,0x4E,0x47,0x00} --DRIFT KING
+local e = {0x4E,0x41,0x4E,0x49,0x3F,0x21,0x3F,0x21,0x00} --NANI?!?!
+local f = {0x44,0x45,0x4A,0x41,0x20,0x56,0x55,0x21,0x21,0x21,0x00} --DEJA VU!!!
+local da = {0x44,0x52,0x49,0x46,0x54,0x20,0x41,0x54,0x54,0x41,0x43,0x4B,0x00} --DRIFT ATTACK
+local pts = {0x7B,0x30,0x3A,0x64,0x7D,0x20,0x50,0x54,0x53,0x00} --{0:d} PTS
+
+function DriftAttack()
+    if db ~= nil and xp ~= nil then
+        writeBytes(xp,pts) --+{0:d} XP
+        local drift = readInteger("[driftbonus]")
+        if drift ~= nil then
+            if drift &lt; 250 then
+               writeBytes(db,a) --DRIFTING BONUS
+            elseif drift &lt; 500 then
+                writeBytes(db,b)
+            elseif drift &lt; 1000 then
+                writeBytes(db,c)
+            elseif drift &lt; 2500 then
+                writeBytes(db,d)
+            elseif drift &lt; 5000 then
+                writeBytes(db,e)
+            else
+                writeBytes(db,f)
+            end
+
+            aux = {}
+            s = tostring(readFloat("[driftbonus]+14"))
+            for i=1,string.len(s) do
+                if string.byte(s,i) == 0x2E then break end
+                aux[i] = string.byte(s,i)
+            end
+            aux[#aux+1]= "00"
+            writeBytes(dftg,aux)
+        end
+    end
+end
+
+daf = createTimer(nil)
+timer_onTimer(daf,DriftAttack)
+timer_setInterval(daf, 1)
+timer_setEnabled(daf, true)
+
+[DISABLE]
+print "Drift Message Display timer disabled"
+timer_setEnabled(daf, false)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>713</ID>
+          <Description>"Drift Attack Point Reset"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+[ENABLE]
+function eventWatch()
+    if readPointer("[driftbonus]") ~= nil then
+        if readPointer("[[[[[[02A858B0]+88]+38]+D0]+14C]+8]+AEB") == nil then --FOR EVERY EVENT INSTANCE
+            writeInteger("[driftbonus]",0)
+        end
+    end
+end
+
+ew = createTimer(nil)
+timer_onTimer(ew,eventWatch)
+timer_setInterval(ew, 1)
+timer_setEnabled(ew, true)
+
+[DISABLE]
+timer_setEnabled(ew, false)
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>698</ID>
+          <Description>"Drift Score Counter"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+add [esi+1C],ecx
+mov ecx,["Need for Speed The Run.exe"+2482500]
+
+originalcode:
+//mov [esi+1C],ecx
+//mov ecx,["Need for Speed The Run.exe"+2482500]
+
+exit:
+jmp returnhere
+
+"Need for Speed The Run.exe"+4CB960:
+jmp newmem
+nop 4
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+"Need for Speed The Run.exe"+4CB960:
+mov [esi+1C],ecx
+mov ecx,["Need for Speed The Run.exe"+2482500]
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>699</ID>
+          <Description>"Drifting Bonus Score Hook"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(driftbonus,$500)
+registersymbol(driftbonus)
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+push ebx
+lea ebx,[ebp+1C]
+mov [driftbonus],ebx
+pop ebx
+mov eax,[ebp+1C]
+fld dword ptr [ecx+28]
+
+originalcode:
+//mov eax,[ebp+1C]
+//fld dword ptr [ecx+28]
+
+exit:
+jmp returnhere
+
+"Need for Speed The Run.exe"+3F8E86:
+jmp newmem
+nop
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+dealloc(driftbonus)
+unregistersymbol(driftbonus)
+"Need for Speed The Run.exe"+3F8E86:
+mov eax,[ebp+1C]
+fld dword ptr [ecx+28]
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>700</ID>
+              <Description>"Drifting Bonus Score"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>driftbonus</Address>
+              <Offsets>
+                <Offset>0</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>701</ID>
+              <Description>"Drifting Bonus Real Time"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>driftbonus</Address>
+              <Offsets>
+                <Offset>14</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>711</ID>
+          <Description>"Drift Physics Enhance"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+0069AF4D:
+jne 0069AF58
+
+[DISABLE]
+
+0069AF4D:
+je 0069AF58
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>708</ID>
+          <Description>"Number of Players Override"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+push ebx
+lea ebx,[ecx+70]
+mov [ebx],1 //Number of Opponents Including the Player
+mov edx,[ebx]
+pop ebx
+mov [esi+000005C8],edx
+
+originalcode:
+//mov edx,[ecx+70]
+//mov [esi+000005C8],edx
+
+exit:
+jmp returnhere
+
+"Need for Speed The Run.exe"+FCC0D1:
+jmp newmem
+nop 4
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+"Need for Speed The Run.exe"+FCC0D1:
+mov edx,[ecx+70]
+mov [esi+000005C8],edx
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>867</ID>
+          <Description>"Unlock All Vehicles"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+mov [eax+18],1
+jne "Need for Speed The Run.exe"+53D639
+
+originalcode:
+//cmp [eax+18],bl
+//jne "Need for Speed The Run.exe"+53D639
+
+exit:
+jmp returnhere
+
+"Need for Speed The Run.exe"+53D629:
+jmp newmem
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+"Need for Speed The Run.exe"+53D629:
+cmp [eax+18],bl
+jne "Need for Speed The Run.exe"+53D639
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>993</ID>
+          <Description>"Challenge Series Car Restriction Open"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem:
+push ebx
+lea ebx,[esi+48]
+mov [ebx],(int)0
+mov ecx,[ebx] //ID_PLAYLIST_CARRESTICTION_OPEN
+push 00
+pop ebx
+
+originalcode:
+//mov ecx,[esi+48]
+//push 00
+
+exit:
+jmp returnhere
+
+"Need For Speed The Run.exe"+48D46C:
+jmp newmem
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+"Need For Speed The Run.exe"+48D46C:
+mov ecx,[esi+48]
+push 00
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>19</ID>
+          <Description>"Reset OOB Disable"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+007FAA8C:
+nop
+nop
+nop
+
+[DISABLE]
+007FAA8C:
+fld dword ptr [ecx+68]
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>473</ID>
+          <Description>"Wrong Way Respawn Disable"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+nop
+nop
+nop
+nop
+nop
+nop
+
+originalcode:
+//fld dword ptr [esi+00002924]
+
+exit:
+jmp returnhere
+
+"Need for Speed The Run.exe"+408915:
+jmp newmem
+nop
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+"Need for Speed The Run.exe"+408915:
+fld dword ptr [esi+00002924]
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1</ID>
+          <Description>"Checkpoint Timer Disable"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+008FBF06:
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+
+013DB998:
+nop
+nop
+nop
+nop
+nop
+
+[DISABLE]
+008FBF06:
+movss [ecx+00000580],xmm0
+
+013DB998:
+movss [eax+04],xmm0
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>710</ID>
+      <Description>"Disable Vehicle Assists"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+
+/*
+0181A09B:
+jne 0181A191 // Disables DriftIntentAnalyzer
+
+0181A1EF:
+jne 0181A24A // Disables RaceLineAnalyzer
+
+0181A4D7:
+je 0181A512 // Disables RaceCarExtraForces
+
+0181A35D:
+je 0181A3E9 // Disables RaceLineAssist states prep
+
+0069B003:
+je 0069B01E //"Wallride Grief Protection"
+*/
+
+0069B167:
+je 0069B1A7 // Disables AlignToRoad
+
+0069B5E2:
+jne 0069B60F // Disables OverrideDriftIntent
+
+01819981: // Sets RaceLineAssist status to RaceLineAssist_Off
+mov [edi+50],00000000
+
+018199A6: // Skips RaceLineAssist calculation
+jmp 01819CDC
+nop
+
+01819AB1:
+jne 01819CAC // Disables all RaceLineAssist forces
+
+0181AA64: // Disables drift assist forces
+nop
+nop
+nop
+nop
+nop
+
+01828E73: // Skips DriftIntents calculation
+jmp 018293A0
+nop
+
+[DISABLE]
+
+/*
+0181A09B:
+je 0181A191
+
+0181A1EF:
+je 0181A24A
+
+0181A4D7:
+jne 0181A512
+
+0181A35D:
+jne 0181A3E9
+
+0069B003:
+jne 0069B01E
+*/
+
+0069B167:
+jne 0069B1A7
+
+0069B5E2:
+je 0069B60F
+
+01819981:
+mov [edi+50],00000002
+
+018199A6:
+ja 01819CDC
+
+01819AB1:
+je 01819CAC
+
+0181AA64:
+call 0181A8E0
+
+01828E73:
+je 018293A0
+</AssemblerScript>
+      <Hotkeys>
+        <Hotkey>
+          <Action>Toggle Activation</Action>
+          <Keys>
+            <Key>103</Key>
+          </Keys>
+          <ID>0</ID>
+        </Hotkey>
+      </Hotkeys>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>709</ID>
+      <Description>"Traffic Density Scale"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+push ebx
+lea ebx,[ecx]
+mov [ebx],(float)0.00 //DensityScale
+movss xmm0,[ebx]
+and eax,-04
+pop ebx
+
+
+originalcode:
+//movss xmm0,[ecx]
+//and eax,-04
+
+exit:
+jmp returnhere
+
+"Need for Speed The Run.exe"+E5EEF6:
+jmp newmem
+nop 2
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+"Need for Speed The Run.exe"+E5EEF6:
+movss xmm0,[ecx]
+and eax,-04
+</AssemblerScript>
+      <Hotkeys>
+        <Hotkey>
+          <Action>Toggle Activation</Action>
+          <Keys>
+            <Key>104</Key>
+          </Keys>
+          <ID>0</ID>
+        </Hotkey>
+      </Hotkeys>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>988</ID>
+      <Description>"Raw Input Enable"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+//0 GAMEPAD (DEFAULT), 1 RAW INPUT, 2 UNKNOWN, 3 NO STEERING
+
+newmem:
+mov [esi+00000088],1
+
+originalcode:
+//mov [esi+00000088],eax
+
+exit:
+jmp returnhere
+
+"Need For Speed The Run.exe"+29AB3A:
+jmp newmem
+nop
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+"Need For Speed The Run.exe"+29AB3A:
+mov [esi+00000088],eax
+</AssemblerScript>
+      <Hotkeys>
+        <Hotkey>
+          <Action>Toggle Activation</Action>
+          <Keys>
+            <Key>105</Key>
+          </Keys>
+          <ID>0</ID>
+        </Hotkey>
+      </Hotkeys>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
